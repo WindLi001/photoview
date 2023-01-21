@@ -137,12 +137,7 @@ var VideoMimetypes = [...]MediaType{
 }
 
 // WebVideoMimetypes are video types that can be played directly in the browser without transcoding
-var WebVideoMimetypes = [...]MediaType{
-	TypeMP4,
-	TypeMPEG,
-	TypeWEBM,
-	TypeOGG,
-}
+var WebVideoMimetypes = VideoMimetypes
 
 var fileExtensions = map[string]MediaType{
 	".jpg":  TypeJpeg,
