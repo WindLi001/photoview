@@ -22,12 +22,12 @@ import (
 )
 
 var thumbFilter = map[models.ThumbnailFilter]imaging.ResampleFilter{
-	models.ThumbnailFilterNearestNeighbor:  imaging.NearestNeighbor,
-	models.ThumbnailFilterBox:  imaging.Box,
-	models.ThumbnailFilterLinear:	imaging.Linear,
-	models.ThumbnailFilterMitchellNetravali:	imaging.MitchellNetravali,
-	models.ThumbnailFilterCatmullRom:	imaging.CatmullRom,
-	models.ThumbnailFilterLanczos:	imaging.Lanczos,
+	models.ThumbnailFilterNearestNeighbor:   imaging.NearestNeighbor,
+	models.ThumbnailFilterBox:               imaging.Box,
+	models.ThumbnailFilterLinear:            imaging.Linear,
+	models.ThumbnailFilterMitchellNetravali: imaging.MitchellNetravali,
+	models.ThumbnailFilterCatmullRom:        imaging.CatmullRom,
+	models.ThumbnailFilterLanczos:           imaging.Lanczos,
 }
 
 func EncodeThumbnail(db *gorm.DB, inputPath string, outputPath string) (*media_utils.PhotoDimensions, error) {
@@ -46,7 +46,7 @@ func EncodeThumbnail(db *gorm.DB, inputPath string, outputPath string) (*media_u
 	dimensions = dimensions.ThumbnailScale()
 
 	thumbImage := imaging.Resize(inputImage, dimensions.Width, dimensions.Height, thumbFilter[siteInfo.ThumbnailMethod])
-	if err = encodeImageJPEG(thumbImage, outputPath, 60); err != nil {
+	if err = encodeImageJPEG(thumbImage, outputPath, 80); err != nil {
 		return nil, err
 	}
 
