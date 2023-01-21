@@ -61,7 +61,7 @@ const useMapboxMap = ({
 
     map.current = new mapboxLibrary.Map({
       zoom: 6, // zoom must be initialized to 6 or more, or the language of map cannot be set.
-      center: [-77.0259, 38.901], // Initial to the land.
+      center: [113.5, 24.8], // Initial to the land.
       container: mapContainer.current,
       style: isDarkMode()
         ? 'mapbox://styles/mapbox/dark-v10'
