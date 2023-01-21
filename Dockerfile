@@ -45,6 +45,10 @@ ENV PATH="${GOPATH}/bin:${PATH}"
 
 ENV CGO_ENABLED 1
 
+ENV http_proxy "http://192.168.10.200:1080"
+ENV https_proxy "http://192.168.10.200:1080"
+ENV GOPROXY "https://mirrors.aliyun.com/goproxy/,direct"
+
 RUN go env
 
 RUN mkdir -p /app
