@@ -111,7 +111,7 @@ func (img *EncodeMediaData) EncodeHighRes(outputPath string) error {
 	// Use darktable if there is no counterpart JPEG file to use instead
 	if contentType.IsRaw() && img.CounterpartPath == nil {
 		if executable_worker.DarktableCli.IsInstalled() {
-			err := executable_worker.DarktableCli.EncodeJpeg(img.Media.Path, outputPath, 70)
+			err := executable_worker.DarktableCli.EncodeJpeg(img.Media.Path, outputPath, 80)
 			if err != nil {
 				return err
 			}
@@ -124,7 +124,7 @@ func (img *EncodeMediaData) EncodeHighRes(outputPath string) error {
 			return err
 		}
 
-		encodeImageJPEG(image, outputPath, 70)
+		encodeImageJPEG(image, outputPath, 80)
 	}
 
 	return nil
