@@ -50,6 +50,11 @@ func (dimensions *PhotoDimensions) ThumbnailScale() PhotoDimensions {
 		height = int(1080 / aspect)
 	}
 
+	if width > dimensions.Width {
+		width = dimensions.Width
+		height = dimensions.Height
+	}
+
 	return PhotoDimensions{
 		Width:  width,
 		Height: height,
