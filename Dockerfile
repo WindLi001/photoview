@@ -25,6 +25,7 @@ WORKDIR /app
 
 # Download dependencies
 COPY ui/package*.json /app/
+RUN npm config set registry https://registry.npmmirror.com
 RUN npm ci --omit=dev --ignore-scripts
 
 # Build frontend
