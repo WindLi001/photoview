@@ -41,13 +41,11 @@ func (dimensions *PhotoDimensions) ThumbnailScale() PhotoDimensions {
 	var width, height int
 
 	if aspect > 1 {
-		// For landscape photo, the height is set to the height of the mobile screen
-		width = int(1080 * aspect)
-		height = 1080
+		width = 1024
+		height = int(1024 / aspect)
 	} else {
-		// For portrait photo, the width is set to the height of the mobile screen
-		width = 1080
-		height = int(1080 / aspect)
+		width = int(1024 * aspect)
+		height = 1024
 	}
 
 	if width > dimensions.Width {
