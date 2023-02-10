@@ -42,3 +42,8 @@ yarn-error.log*
 .vscode
 __debug_bin
 .idea
+
+# windows running & testing
+api/*.dll
+api/*.exe
+api/media_cache
