@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/media_encoding"
@@ -68,7 +68,7 @@ func (t ProcessPhotoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 
 		if !contentType.IsWebCompatible() {
 			highresName := generateUniqueMediaNamePrefixed("highres", photo.Path, ".jpg")
-			baseImagePath = path.Join(mediaCachePath, highresName)
+			baseImagePath = filepath.Join(mediaCachePath, highresName)
 
 			highRes, err := generateSaveHighResJPEG(ctx.GetDB(), photo, mediaData, highresName, baseImagePath, nil)
 			if err != nil {
@@ -79,7 +79,7 @@ func (t ProcessPhotoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 		}
 	} else {
 		// Verify that highres photo still exists in cache
-		baseImagePath = path.Join(mediaCachePath, highResURL.MediaName)
+		baseImagePath = filepath.Join(mediaCachePath, highResURL.MediaName)
 
 		if _, err := os.Stat(baseImagePath); os.IsNotExist(err) {
 			fmt.Printf("High-res photo found in database but not in cache, re-encoding photo to cache: %s\n", highResURL.MediaName)
@@ -122,7 +122,7 @@ func (t ProcessPhotoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 		updatedURLs = append(updatedURLs, thumbnail)
 	} else {
 		// Verify that thumbnail photo still exists in cache
-		thumbPath := path.Join(mediaCachePath, thumbURL.MediaName)
+		thumbPath := filepath.Join(mediaCachePath, thumbURL.MediaName)
 
 		if _, err := os.Stat(thumbPath); os.IsNotExist(err) {
 			updatedURLs = append(updatedURLs, thumbURL)

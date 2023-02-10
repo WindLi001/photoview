@@ -3,7 +3,7 @@ package scanner_cache
 import (
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"sync"
 
 	"github.com/photoview/photoview/api/scanner/media_type"
@@ -35,8 +35,8 @@ func (c *AlbumScannerCache) InsertAlbumPath(path string, contains_photo bool) {
 
 // Insert album path and all parent directories up to the given root directory in cache
 func (c *AlbumScannerCache) InsertAlbumPaths(end_path string, root string, contains_photo bool) {
-	curr_path := path.Clean(end_path)
-	root_path := path.Clean(root)
+	curr_path := filepath.Clean(end_path)
+	root_path := filepath.Clean(root)
 
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
@@ -45,7 +45,7 @@ func (c *AlbumScannerCache) InsertAlbumPaths(end_path string, root string, conta
 
 		c.path_contains_photos[curr_path] = contains_photo
 
-		curr_path = path.Dir(curr_path)
+		curr_path = filepath.Dir(curr_path)
 	}
 }
 
@@ -118,7 +118,7 @@ func (c *AlbumScannerCache) IsPathMedia(mediaPath string) bool {
 	}
 
 	// Ignore hidden files
-	if path.Base(mediaPath)[0:1] == "." {
+	if filepath.Base(mediaPath)[0:1] == "." {
 		return false
 	}
 

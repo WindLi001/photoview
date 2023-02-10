@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -87,12 +87,12 @@ func (t ProcessVideoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 	}
 
 	if videoWebURL == nil && !videoType.IsWebCompatible() {
-		web_video_name := fmt.Sprintf("web_video_%s_%s", path.Base(video.Path), utils.GenerateToken())
+		web_video_name := fmt.Sprintf("web_video_%s_%s", filepath.Base(video.Path), utils.GenerateToken())
 		web_video_name = strings.ReplaceAll(web_video_name, ".", "_")
 		web_video_name = strings.ReplaceAll(web_video_name, " ", "_")
 		web_video_name = web_video_name + ".mp4"
 
-		webVideoPath := path.Join(mediaCachePath, web_video_name)
+		webVideoPath := filepath.Join(mediaCachePath, web_video_name)
 
 		err = executable_worker.FfmpegCli.EncodeMp4(video.Path, webVideoPath)
 		if err != nil {
@@ -132,12 +132,12 @@ func (t ProcessVideoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 	}
 
 	if videoThumbnailURL == nil {
-		video_thumb_name := fmt.Sprintf("video_thumb_%s_%s", path.Base(video.Path), utils.GenerateToken())
+		video_thumb_name := fmt.Sprintf("video_thumb_%s_%s", filepath.Base(video.Path), utils.GenerateToken())
 		video_thumb_name = strings.ReplaceAll(video_thumb_name, ".", "_")
 		video_thumb_name = strings.ReplaceAll(video_thumb_name, " ", "_")
 		video_thumb_name = video_thumb_name + ".jpg"
 
-		thumbImagePath := path.Join(mediaCachePath, video_thumb_name)
+		thumbImagePath := filepath.Join(mediaCachePath, video_thumb_name)
 
 		err = executable_worker.FfmpegCli.EncodeVideoThumbnail(video.Path, thumbImagePath, probeData)
 		if err != nil {
@@ -171,7 +171,7 @@ func (t ProcessVideoTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *
 		updatedURLs = append(updatedURLs, &thumbMediaURL)
 	} else {
 		// Verify that video thumbnail still exists in cache
-		thumbImagePath := path.Join(mediaCachePath, videoThumbnailURL.MediaName)
+		thumbImagePath := filepath.Join(mediaCachePath, videoThumbnailURL.MediaName)
 
 		if _, err := os.Stat(thumbImagePath); os.IsNotExist(err) {
 			fmt.Printf("Video thumbnail found in database but not in cache, re-encoding photo to cache: %s\n", videoThumbnailURL.MediaName)
@@ -211,7 +211,7 @@ func ReadVideoMetadata(videoPath string) (*ffprobe.ProbeData, error) {
 
 	data, err := ffprobe.ProbeURL(ctx, videoPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "could not read video metadata (%s)", path.Base(videoPath))
+		return nil, errors.Wrapf(err, "could not read video metadata (%s)", filepath.Base(videoPath))
 	}
 
 	return data, nil
@@ -225,7 +225,7 @@ func ReadVideoStreamMetadata(videoPath string) (*ffprobe.Stream, error) {
 
 	stream := data.FirstVideoStream()
 	if stream == nil {
-		return nil, errors.Wrapf(err, "could not get stream from file metadata (%s)", path.Base(videoPath))
+		return nil, errors.Wrapf(err, "could not get stream from file metadata (%s)", filepath.Base(videoPath))
 	}
 
 	return stream, nil

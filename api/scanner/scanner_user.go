@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/scanner_cache"
@@ -22,7 +22,7 @@ func getPhotoviewIgnore(ignorePath string) ([]string, error) {
 	var photoviewIgnore []string
 
 	// Open .photoviewignore file, if exists
-	photoviewIgnoreFile, err := os.Open(path.Join(ignorePath, ".photoviewignore"))
+	photoviewIgnoreFile, err := os.Open(filepath.Join(ignorePath, ".photoviewignore"))
 	if err != nil {
 		if os.IsNotExist(err) {
 			return photoviewIgnore, nil
@@ -133,7 +133,7 @@ func FindAlbumsForUser(db *gorm.DB, user *models.User, album_cache *scanner_cach
 
 			// album does not exist, create new
 			if len(albumResult) == 0 {
-				albumTitle := path.Base(albumPath)
+				albumTitle := filepath.Base(albumPath)
 
 				var albumParentID *int
 				parentOwners := make([]models.User, 0)
@@ -193,10 +193,10 @@ func FindAlbumsForUser(db *gorm.DB, user *models.User, album_cache *scanner_cach
 
 		// Scan for sub-albums
 		for _, item := range dirContent {
-			subalbumPath := path.Join(albumPath, item.Name())
+			subalbumPath := filepath.Join(albumPath, item.Name())
 
 			// Skip if directory is hidden
-			if path.Base(subalbumPath)[0:1] == "." {
+			if filepath.Base(subalbumPath)[0:1] == "." {
 				continue
 			}
 
@@ -256,7 +256,7 @@ func directoryContainsPhotos(rootPath string, cache *scanner_cache.AlbumScannerC
 		}
 
 		for _, fileInfo := range dirContent {
-			filePath := path.Join(dirPath, fileInfo.Name())
+			filePath := filepath.Join(dirPath, fileInfo.Name())
 
 			isDirSymlink, err := utils.IsDirSymlink(filePath)
 			if err != nil {

@@ -3,7 +3,7 @@ package test_utils
 import (
 	"flag"
 	"log"
-	"path"
+	"path/filepath"
 	"runtime"
 	"testing"
 
@@ -39,14 +39,14 @@ func IntegrationTestRun(m *testing.M) int {
 
 	if *integration_flags.Database {
 
-		envPath := path.Join(path.Dir(file), "..", "testing.env")
+		envPath := filepath.Join(filepath.Dir(file), "..", "testing.env")
 
 		if err := godotenv.Load(envPath); err != nil {
 			log.Println("No testing.env file found")
 		}
 	}
 
-	faceModelsPath := path.Join(path.Dir(file), "..", "data", "models")
+	faceModelsPath := filepath.Join(filepath.Dir(file), "..", "data", "models")
 	utils.ConfigureTestFaceRecognitionModelsPath(faceModelsPath)
 
 	result := m.Run()

@@ -3,7 +3,7 @@ package actions
 import (
 	"errors"
 	"os"
-	"path"
+	"path/filepath"
 	"strconv"
 
 	"github.com/photoview/photoview/api/graphql/models"
@@ -61,7 +61,7 @@ func DeleteUser(db *gorm.DB, userID int) (*models.User, error) {
 
 	// If there is only one associated user, clean up the cache folder and delete the album row
 	for _, deletedAlbumID := range deletedAlbumIDs {
-		cachePath := path.Join(utils.MediaCachePath(), strconv.Itoa(int(deletedAlbumID)))
+		cachePath := filepath.Join(utils.MediaCachePath(), strconv.Itoa(int(deletedAlbumID)))
 		if err := os.RemoveAll(cachePath); err != nil {
 			return &user, err
 		}

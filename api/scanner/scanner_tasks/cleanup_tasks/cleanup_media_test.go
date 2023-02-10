@@ -2,7 +2,7 @@ package cleanup_tasks_test
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 
 	"github.com/otiai10/copy"
@@ -84,25 +84,25 @@ func TestCleanupMedia(t *testing.T) {
 		assert.Equal(t, 18, countAllMediaURLs())
 
 		// move faces directory
-		assert.NoError(t, os.Rename(path.Join(test_dir, "faces"), path.Join(test_dir, "faces_moved")))
+		assert.NoError(t, os.Rename(filepath.Join(test_dir, "faces"), filepath.Join(test_dir, "faces_moved")))
 		test_utils.RunScannerAll(t, db)
 		assert.Equal(t, 9, countAllMedia())
 		assert.Equal(t, 18, countAllMediaURLs())
 
 		// remove faces_moved directory
-		assert.NoError(t, os.RemoveAll(path.Join(test_dir, "faces_moved")))
+		assert.NoError(t, os.RemoveAll(filepath.Join(test_dir, "faces_moved")))
 		test_utils.RunScannerAll(t, db)
 		assert.Equal(t, 3, countAllMedia())
 		assert.Equal(t, 6, countAllMediaURLs())
 	})
 
 	t.Run("Modify images", func(t *testing.T) {
-		assert.NoError(t, os.Rename(path.Join(test_dir, "buttercup_close_summer_yellow.jpg"), path.Join(test_dir, "yellow-flower.jpg")))
+		assert.NoError(t, os.Rename(filepath.Join(test_dir, "buttercup_close_summer_yellow.jpg"), filepath.Join(test_dir, "yellow-flower.jpg")))
 		test_utils.RunScannerAll(t, db)
 		assert.Equal(t, 3, countAllMedia())
 		assert.Equal(t, 6, countAllMediaURLs())
 
-		assert.NoError(t, os.Remove(path.Join(test_dir, "lilac_lilac_bush_lilac.jpg")))
+		assert.NoError(t, os.Remove(filepath.Join(test_dir, "lilac_lilac_bush_lilac.jpg")))
 		test_utils.RunScannerAll(t, db)
 		assert.Equal(t, 2, countAllMedia())
 		assert.Equal(t, 4, countAllMediaURLs())

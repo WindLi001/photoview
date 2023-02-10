@@ -7,7 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/media_encoding"
@@ -94,7 +94,7 @@ func (t SidecarTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *media
 	}
 
 	// update high res image may be cropped so dimentions and file size can change
-	baseImagePath := path.Join(mediaCachePath, highResURL.MediaName) // update base image path for thumbnail
+	baseImagePath := filepath.Join(mediaCachePath, highResURL.MediaName) // update base image path for thumbnail
 	tempHighResPath := baseImagePath + ".hold"
 	os.Rename(baseImagePath, tempHighResPath)
 	updatedHighRes, err := generateSaveHighResJPEG(ctx.GetDB(), photo, mediaData, highResURL.MediaName, baseImagePath, highResURL)
@@ -105,7 +105,7 @@ func (t SidecarTask) ProcessMedia(ctx scanner_task.TaskContext, mediaData *media
 	os.Remove(tempHighResPath)
 
 	// update thumbnail image may be cropped so dimentions and file size can change
-	thumbPath := path.Join(mediaCachePath, thumbURL.MediaName)
+	thumbPath := filepath.Join(mediaCachePath, thumbURL.MediaName)
 	tempThumbPath := thumbPath + ".hold" // hold onto the original image incase for some reason we fail to recreate one with the new settings
 	os.Rename(thumbPath, tempThumbPath)
 	updatedThumbnail, err := generateSaveThumbnailJPEG(ctx.GetDB(), photo, thumbURL.MediaName, mediaCachePath, baseImagePath, thumbURL)

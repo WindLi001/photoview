@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/media_encoding"
@@ -23,13 +23,13 @@ func NewRootAlbum(db *gorm.DB, rootPath string, owner *models.User) (*models.Alb
 		return nil, ErrorInvalidRootPath
 	}
 
-	if !path.IsAbs(rootPath) {
+	if !filepath.IsAbs(rootPath) {
 		wd, err := os.Getwd()
 		if err != nil {
 			return nil, err
 		}
 
-		rootPath = path.Join(wd, rootPath)
+		rootPath = filepath.Join(wd, rootPath)
 	}
 
 	owners := []models.User{
@@ -60,7 +60,7 @@ func NewRootAlbum(db *gorm.DB, rootPath string, owner *models.User) (*models.Alb
 		return &album, nil
 	} else {
 		album := models.Album{
-			Title:  path.Base(rootPath),
+			Title:  filepath.Base(rootPath),
 			Path:   rootPath,
 			Owners: owners,
 		}
@@ -124,7 +124,7 @@ func findMediaForAlbum(ctx scanner_task.TaskContext) ([]*models.Media, error) {
 	}
 
 	for _, item := range dirContent {
-		mediaPath := path.Join(ctx.GetAlbum().Path, item.Name())
+		mediaPath := filepath.Join(ctx.GetAlbum().Path, item.Name())
 
 		isDirSymlink, err := utils.IsDirSymlink(mediaPath)
 		if err != nil {

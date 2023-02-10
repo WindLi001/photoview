@@ -2,7 +2,7 @@ package processing_tasks
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/media_encoding"
@@ -57,7 +57,7 @@ func generateSaveHighResJPEG(tx *gorm.DB, media *models.Media, imageData *media_
 }
 
 func generateSaveThumbnailJPEG(tx *gorm.DB, media *models.Media, thumbnail_name string, photoCachePath string, baseImagePath string, mediaURL *models.MediaURL) (*models.MediaURL, error) {
-	thumbOutputPath := path.Join(photoCachePath, thumbnail_name)
+	thumbOutputPath := filepath.Join(photoCachePath, thumbnail_name)
 
 	thumbSize, err := media_encoding.EncodeThumbnail(tx, baseImagePath, thumbOutputPath)
 	if err != nil {

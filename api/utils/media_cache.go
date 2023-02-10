@@ -2,7 +2,7 @@ package utils
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -19,7 +19,7 @@ func CachePathForMedia(albumID int, mediaID int) (string, error) {
 	}
 
 	// Make album cache dir if not exists
-	albumCachePath := path.Join(MediaCachePath(), strconv.Itoa(int(albumID)))
+	albumCachePath := filepath.Join(MediaCachePath(), strconv.Itoa(int(albumID)))
 	if _, err := os.Stat(albumCachePath); os.IsNotExist(err) {
 		if err := os.Mkdir(albumCachePath, os.ModePerm); err != nil {
 			return "", errors.Wrap(err, "could not make album image cache directory")
@@ -27,7 +27,7 @@ func CachePathForMedia(albumID int, mediaID int) (string, error) {
 	}
 
 	// Make photo cache dir if not exists
-	photoCachePath := path.Join(albumCachePath, strconv.Itoa(int(mediaID)))
+	photoCachePath := filepath.Join(albumCachePath, strconv.Itoa(int(mediaID)))
 	if _, err := os.Stat(photoCachePath); os.IsNotExist(err) {
 		if err := os.Mkdir(photoCachePath, os.ModePerm); err != nil {
 			return "", errors.Wrap(err, "could not make photo image cache directory")

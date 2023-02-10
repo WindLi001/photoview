@@ -3,7 +3,6 @@ package media_type
 import (
 	"io"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -328,7 +327,7 @@ func (mediaType MediaType) FileExtensions() []string {
 }
 
 func RawCounterpart(imagePath string) *string {
-	pathWithoutExt := strings.TrimSuffix(imagePath, path.Ext(imagePath))
+	pathWithoutExt := strings.TrimSuffix(imagePath, filepath.Ext(imagePath))
 
 	for _, rawType := range RawMimeTypes {
 		for _, ext := range rawType.FileExtensions() {
