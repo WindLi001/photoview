@@ -2,7 +2,7 @@ package cleanup_tasks
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 	"strconv"
 
 	"github.com/photoview/photoview/api/graphql/models"
@@ -40,7 +40,7 @@ func CleanupMedia(db *gorm.DB, albumId int, albumMedia []*models.Media) []error 
 	for _, media := range mediaList {
 
 		mediaIDs = append(mediaIDs, media.ID)
-		cachePath := path.Join(utils.MediaCachePath(), strconv.Itoa(int(albumId)), strconv.Itoa(int(media.ID)))
+		cachePath := filepath.Join(utils.MediaCachePath(), strconv.Itoa(int(albumId)), strconv.Itoa(int(media.ID)))
 		err := os.RemoveAll(cachePath)
 		if err != nil {
 			deleteErrors = append(deleteErrors, errors.Wrapf(err, "delete unused cache folder (%s)", cachePath))
@@ -100,7 +100,7 @@ func DeleteOldUserAlbums(db *gorm.DB, scannedAlbums []*models.Album, user *model
 	deleteAlbumIDs := make([]int, len(deleteAlbums))
 	for i, album := range deleteAlbums {
 		deleteAlbumIDs[i] = album.ID
-		cachePath := path.Join(utils.MediaCachePath(), strconv.Itoa(int(album.ID)))
+		cachePath := filepath.Join(utils.MediaCachePath(), strconv.Itoa(int(album.ID)))
 		err := os.RemoveAll(cachePath)
 		if err != nil {
 			deleteErrors = append(deleteErrors, errors.Wrapf(err, "delete unused cache folder (%s)", cachePath))

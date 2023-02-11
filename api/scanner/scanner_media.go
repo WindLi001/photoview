@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/media_encoding"
@@ -15,7 +15,7 @@ import (
 )
 
 func ScanMedia(tx *gorm.DB, mediaPath string, albumId int, cache *scanner_cache.AlbumScannerCache) (*models.Media, bool, error) {
-	mediaName := path.Base(mediaPath)
+	mediaName := filepath.Base(mediaPath)
 
 	// Check if media already exists
 	{

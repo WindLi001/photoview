@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -135,7 +136,7 @@ func (p *MediaURL) CachedPath() (string, error) {
 	}
 
 	if p.Purpose == PhotoThumbnail || p.Purpose == PhotoHighRes || p.Purpose == VideoThumbnail || p.Purpose == VideoWeb {
-		cachedPath = path.Join(utils.MediaCachePath(), strconv.Itoa(int(p.Media.AlbumID)), strconv.Itoa(int(p.MediaID)), p.MediaName)
+		cachedPath = filepath.Join(utils.MediaCachePath(), strconv.Itoa(int(p.Media.AlbumID)), strconv.Itoa(int(p.MediaID)), p.MediaName)
 	} else if p.Purpose == MediaOriginal {
 		cachedPath = p.Media.Path
 	} else {

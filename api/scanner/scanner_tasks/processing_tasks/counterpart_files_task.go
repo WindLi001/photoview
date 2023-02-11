@@ -2,7 +2,6 @@ package processing_tasks
 
 import (
 	"io/fs"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -57,7 +56,7 @@ func scanForCompressedCounterpartFile(imagePath string) *string {
 		}
 	}
 
-	pathWithoutExt := strings.TrimSuffix(imagePath, path.Ext(imagePath))
+	pathWithoutExt := strings.TrimSuffix(imagePath, filepath.Ext(imagePath))
 	for _, ext := range media_type.TypeJpeg.FileExtensions() {
 		testPath := pathWithoutExt + ext
 		if scanner_utils.FileExists(testPath) {

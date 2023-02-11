@@ -6,7 +6,6 @@ import (
 	"log"
 	"math/big"
 	"os"
-	"path"
 	"path/filepath"
 
 	"github.com/pkg/errors"
@@ -59,7 +58,7 @@ func FaceRecognitionModelsPath() string {
 	}
 
 	if EnvFaceRecognitionModelsPath.GetValue() == "" {
-		return path.Join("data", "models")
+		return filepath.Join("data", "models")
 	}
 
 	return EnvFaceRecognitionModelsPath.GetValue()

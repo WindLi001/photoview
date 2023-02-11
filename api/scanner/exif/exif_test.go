@@ -3,7 +3,7 @@ package exif_test
 import (
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -79,7 +79,7 @@ func TestExifParsers(t *testing.T) {
 
 	for _, p := range parsers {
 		for _, img := range images {
-			t.Run(fmt.Sprintf("%s:%s", p.name, path.Base(img.path)), func(t *testing.T) {
+			t.Run(fmt.Sprintf("%s:%s", p.name, filepath.Base(img.path)), func(t *testing.T) {
 
 				if p.name == "external" {
 					_, err := exiftool.NewExiftool()

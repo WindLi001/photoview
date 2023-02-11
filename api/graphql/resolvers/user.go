@@ -3,7 +3,7 @@ package resolvers
 import (
 	"context"
 	"os"
-	"path"
+	"path/filepath"
 	"strconv"
 
 	api "github.com/photoview/photoview/api/graphql"
@@ -115,7 +115,7 @@ func (r *mutationResolver) InitialSetupWizard(ctx context.Context, username stri
 		return nil, errors.New("not initial setup")
 	}
 
-	rootPath = path.Clean(rootPath)
+	rootPath = filepath.Clean(rootPath)
 
 	var token *models.AccessToken
 
@@ -266,7 +266,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id int) (*models.User
 func (r *mutationResolver) UserAddRootPath(ctx context.Context, id int, rootPath string) (*models.Album, error) {
 	db := r.DB(ctx)
 
-	rootPath = path.Clean(rootPath)
+	rootPath = filepath.Clean(rootPath)
 
 	var user models.User
 	if err := db.First(&user, id).Error; err != nil {
@@ -342,7 +342,7 @@ func (r *mutationResolver) UserRemoveRootAlbum(ctx context.Context, userID int, 
 	if deletedAlbumIDs != nil {
 		// Delete albums from cache
 		for _, id := range deletedAlbumIDs {
-			cacheAlbumPath := path.Join(utils.MediaCachePath(), strconv.Itoa(id))
+			cacheAlbumPath := filepath.Join(utils.MediaCachePath(), strconv.Itoa(id))
 
 			if err := os.RemoveAll(cacheAlbumPath); err != nil {
 				return nil, err

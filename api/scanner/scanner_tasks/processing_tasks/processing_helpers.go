@@ -3,7 +3,7 @@ package processing_tasks
 import (
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/media_encoding"
@@ -33,7 +33,7 @@ func makePhotoURLChecker(tx *gorm.DB, mediaID int) func(purpose models.MediaPurp
 }
 
 func generateUniqueMediaNamePrefixed(prefix string, mediaPath string, extension string) string {
-	mediaName := fmt.Sprintf("%s_%s_%s", prefix, path.Base(mediaPath), utils.GenerateToken())
+	mediaName := fmt.Sprintf("%s_%s_%s", prefix, filepath.Base(mediaPath), utils.GenerateToken())
 	mediaName = models.SanitizeMediaName(mediaName)
 	mediaName = mediaName + extension
 	return mediaName
@@ -41,9 +41,9 @@ func generateUniqueMediaNamePrefixed(prefix string, mediaPath string, extension 
 
 func generateUniqueMediaName(mediaPath string) string {
 
-	filename := path.Base(mediaPath)
-	baseName := filename[0 : len(filename)-len(path.Ext(filename))]
-	baseExt := path.Ext(filename)
+	filename := filepath.Base(mediaPath)
+	baseName := filename[0 : len(filename)-len(filepath.Ext(filename))]
+	baseExt := filepath.Ext(filename)
 
 	mediaName := fmt.Sprintf("%s_%s", baseName, utils.GenerateToken())
 	mediaName = models.SanitizeMediaName(mediaName) + baseExt
