@@ -7,7 +7,6 @@ import (
 	"math/big"
 	"os"
 	"path"
-	"path/filepath"
 
 	"github.com/pkg/errors"
 )
@@ -77,14 +76,9 @@ func IsDirSymlink(path string) (bool, error) {
 
 	//Resolve symlinks
 	if fileInfo.Mode()&os.ModeSymlink == os.ModeSymlink {
-		resolvedPath, err := filepath.EvalSymlinks(path)
+		resolvedFile, err := os.Stat(path)
 		if err != nil {
-			return false, errors.Wrapf(err, "Cannot resolve linktarget of %s, ignoring it", path)
-		}
-
-		resolvedFile, err := os.Stat(resolvedPath)
-		if err != nil {
-			return false, errors.Wrapf(err, "Cannot get fileinfo of linktarget %s of symlink %s, ignoring it", resolvedPath, path)
+			return false, errors.Wrapf(err, "Cannot get fileinfo of symlink %s, ignoring it", path)
 		}
 		isDirSymlink = resolvedFile.IsDir()
 
