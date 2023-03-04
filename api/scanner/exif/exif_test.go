@@ -82,7 +82,7 @@ func TestExifParsers(t *testing.T) {
 			t.Run(fmt.Sprintf("%s:%s", p.name, filepath.Base(img.path)), func(t *testing.T) {
 
 				if p.name == "external" {
-					_, err := exiftool.NewExiftool()
+					_, err := exiftool.NewExiftool(exiftool.Charset("filename=utf8"))
 					if err != nil {
 						t.Skip("failed to get exiftool, skipping test")
 					}

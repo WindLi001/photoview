@@ -16,7 +16,7 @@ type externalExifParser struct {
 }
 
 func NewExiftoolParser() (ExifParser, error) {
-	et, err := exiftool.NewExiftool(exiftool.NoPrintConversion())
+	et, err := exiftool.NewExiftool(exiftool.NoPrintConversion(), exiftool.Charset("filename=utf8"))
 
 	if err != nil {
 		log.Printf("Error initializing ExifTool: %s\n", err)
@@ -64,7 +64,7 @@ func sanitizeEXIF(exif *models.MediaEXIF) {
 func (p *externalExifParser) ParseExif(media_path string) (returnExif *models.MediaEXIF, returnErr error) {
 	// ExifTool - No print conversion mode
 	if p.et == nil {
-		et, err := exiftool.NewExiftool(exiftool.NoPrintConversion())
+		et, err := exiftool.NewExiftool(exiftool.NoPrintConversion(), exiftool.Charset("filename=utf8"))
 		p.et = et
 
 		if err != nil {
