@@ -250,7 +250,7 @@ func (imgType *MediaType) IsSupported() bool {
 		return true
 	}
 
-	if executable_worker.DarktableCli.IsInstalled() && imgType.IsRaw() {
+	if imgType.IsRaw() {
 		return true
 	}
 
